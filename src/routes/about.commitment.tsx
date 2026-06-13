@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageLayout } from "@/components/PageLayout";
-import { PageNav, commitmentLinks } from "@/components/PageNav";
+import { PageNav } from "@/components/PageNav";
 
 export const Route = createFileRoute("/about/commitment")({
   head: () => ({
@@ -30,7 +30,7 @@ function Commitment() {
       title="Our Commitment"
       subtitle=""
       nav={
-        <PageNav title="Our Commitment" links={commitmentLinks} currentPath="/about/commitment" />
+        <PageNav title="Our Commitment" links={items} currentPath="/about/commitment" />
       }
     >
       <div className="lp-prose space-y-4">
