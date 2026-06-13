@@ -1,0 +1,6 @@
+navbar extend images in all pages 
+home page our services photos layout  
+increase the size of photos in sub options 
+separate page for certifications
+certificates like animations in field of business  
+add "Engineering Excellence for Industrial Performance" in home page with black outline
