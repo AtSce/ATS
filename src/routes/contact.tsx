@@ -172,10 +172,11 @@ export function ContactUs() {
           {/* User Feedback Notification Banners */}
           {submissionStatus.type && (
             <div
-              className={`p-4 text-sm font-semibold rounded-none border ${submissionStatus.type === "success"
+              className={`p-4 text-sm font-semibold rounded-none border ${
+                submissionStatus.type === "success"
                   ? "bg-emerald-50 border-emerald-200 text-emerald-800"
                   : "bg-rose-50 border-rose-200 text-rose-800"
-                }`}
+              }`}
             >
               {submissionStatus.message}
             </div>
@@ -270,7 +271,9 @@ export function ContactUs() {
                 <option value="Mechanical">Mechanical</option>
                 <option value="Structural Fabrication">Structural Fabrication</option>
                 <option value="Refinery & Plant">Refinery & Plant</option>
-                <option value="Engineering , procurement and construction">Engineering , procurement and construction (EPC)</option>
+                <option value="Engineering , procurement and construction">
+                  Engineering , procurement and construction (EPC)
+                </option>
                 <option value="Scaffolding Service">Scaffolding Service</option>
                 <option value="Plant Maintenance">Plant Maintenance</option>
                 <option value="Pipe Fabrication Services">Pipe Fabrication Services</option>

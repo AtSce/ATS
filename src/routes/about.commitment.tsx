@@ -29,9 +29,7 @@ function Commitment() {
       eyebrow="ABOUT US"
       title="Our Commitment"
       subtitle=""
-      nav={
-        <PageNav title="Our Commitment" links={items} currentPath="/about/commitment" />
-      }
+      nav={<PageNav title="Our Commitment" links={items} currentPath="/about/commitment" />}
     >
       <div className="lp-prose space-y-4">
         <p>Our commitment to clients is delivered across four core areas. Explore each below:</p>

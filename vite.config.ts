@@ -1,3 +1,8 @@
-import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+import { defineConfig } from "vite";
+import { cloudflare } from "@cloudflare/vite-plugin";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import tsConfigPaths from "vite-tsconfig-paths";
 
-export default defineConfig({});
+export default defineConfig({
+  plugins: [cloudflare({ viteEnvironment: { name: "ssr" } }), tanstackStart(), tsConfigPaths()],
+});

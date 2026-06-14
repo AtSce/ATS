@@ -78,7 +78,7 @@ function Admin() {
     const nextStatus = !currentStatus;
 
     setLeads((prevLeads) =>
-      prevLeads.map((lead) => (lead.id === id ? { ...lead, is_completed: nextStatus } : lead))
+      prevLeads.map((lead) => (lead.id === id ? { ...lead, is_completed: nextStatus } : lead)),
     );
 
     try {
@@ -109,7 +109,9 @@ function Admin() {
       "COMPANY NAME": lead.company || "N/A",
       "EMAIL ADDRESS": lead.email,
       "PHONE NUMBER": lead.phone || "N/A",
-      "SCOPE OF INTEREST": lead.scope_of_interest ? lead.scope_of_interest.replace(/-/g, " ").toUpperCase() : "N/A",
+      "SCOPE OF INTEREST": lead.scope_of_interest
+        ? lead.scope_of_interest.replace(/-/g, " ").toUpperCase()
+        : "N/A",
       "PROJECT DETAILS MESSAGE": lead.message,
     }));
 
@@ -119,7 +121,10 @@ function Admin() {
     XLSX.utils.book_append_sheet(workbook, worksheet, "Business Leads");
 
     // Triggers instant system file package saves on your operating system environment
-    XLSX.writeFile(workbook, `AtripleS_Leads_Report_${new Date().toISOString().split("T")[0]}.xlsx`);
+    XLSX.writeFile(
+      workbook,
+      `AtripleS_Leads_Report_${new Date().toISOString().split("T")[0]}.xlsx`,
+    );
   };
 
   // --- CONDITION 1: RENDER SECURE LOG-IN UI PANEL IF NOT AUTHENTICATED ---
@@ -132,7 +137,9 @@ function Admin() {
       >
         <div className="max-w-xl mx-auto text-left mt-8 w-full">
           <div className="border border-black/10 bg-[#fbfbfb] p-6 md:p-10 shadow-lg space-y-6">
-            <h3 className="text-[11px] font-bold uppercase tracking-widest text-black/50">Sign In</h3>
+            <h3 className="text-[11px] font-bold uppercase tracking-widest text-black/50">
+              Sign In
+            </h3>
 
             {loginError && (
               <div className="p-3 text-xs font-semibold border bg-rose-50 border-rose-200 text-rose-800">
@@ -193,7 +200,6 @@ function Admin() {
       subtitle="Review active service contact enquiries and complete follow-ups."
     >
       <div className="w-full mt-6 space-y-4 text-left">
-
         {/* Dashboard Actions Metrics Banner */}
         <div className="flex justify-between items-center bg-white border border-black/10 p-4">
           <div className="text-sm text-black/60 font-medium">
@@ -246,8 +252,9 @@ function Admin() {
                   {leads.map((lead) => (
                     <tr
                       key={lead.id}
-                      className={`hover:bg-[#fbfbfb]/50 transition-colors ${lead.is_completed ? "bg-emerald-50/20" : ""
-                        }`}
+                      className={`hover:bg-[#fbfbfb]/50 transition-colors ${
+                        lead.is_completed ? "bg-emerald-50/20" : ""
+                      }`}
                     >
                       <td className="p-4">
                         <label className="flex items-center gap-2 cursor-pointer select-none">
@@ -258,8 +265,9 @@ function Admin() {
                             className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
                           />
                           <span
-                            className={`text-xs font-bold uppercase tracking-wide ${lead.is_completed ? "text-emerald-700 font-black" : "text-amber-700"
-                              }`}
+                            className={`text-xs font-bold uppercase tracking-wide ${
+                              lead.is_completed ? "text-emerald-700 font-black" : "text-amber-700"
+                            }`}
                           >
                             {lead.is_completed ? "Completed" : "Pending"}
                           </span>
@@ -269,7 +277,9 @@ function Admin() {
                       <td className="p-4 font-medium text-black">
                         <div>{lead.name}</div>
                         {lead.company && (
-                          <div className="text-xs text-black/40 font-normal mt-0.5">{lead.company}</div>
+                          <div className="text-xs text-black/40 font-normal mt-0.5">
+                            {lead.company}
+                          </div>
                         )}
                       </td>
 
@@ -294,7 +304,6 @@ function Admin() {
             </div>
           )}
         </div>
-
       </div>
     </PageLayout>
   );
