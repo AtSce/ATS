@@ -99,7 +99,7 @@ export function SiteHeader() {
         </Link>
 
         {/* Desktop Navbar Row Links */}
-        <div className="ml-auto flex items-stretch">
+        <div className="ml-auto hidden lg:flex items-stretch">
           {nav.map((item) =>
             item.children ? (
               <div key={item.label} className="group relative flex items-stretch">
@@ -193,9 +193,8 @@ export function SiteHeader() {
                   >
                     {item.label}
                     <ChevronDown
-                      className={`h-4 w-4 transition-transform ${
-                        mobileExpanded === item.label ? "rotate-180" : ""
-                      }`}
+                      className={`h-4 w-4 transition-transform ${mobileExpanded === item.label ? "rotate-180" : ""
+                        }`}
                     />
                   </button>
                   {mobileExpanded === item.label && (
@@ -211,9 +210,8 @@ export function SiteHeader() {
                             >
                               {sub.label}
                               <ChevronDown
-                                className={`h-4 w-4 transition-transform ${
-                                  mobileSubExpanded === sub.label ? "rotate-180" : ""
-                                }`}
+                                className={`h-4 w-4 transition-transform ${mobileSubExpanded === sub.label ? "rotate-180" : ""
+                                  }`}
                               />
                             </button>
                             {mobileSubExpanded === sub.label &&
