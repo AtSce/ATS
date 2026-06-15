@@ -93,22 +93,6 @@ function Home() {
           </div>
         </div>
 
-        {/* Nav buttons */}
-        <button
-          aria-label="Previous slide"
-          onClick={prev}
-          className="absolute left-4 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/15 p-3 text-white backdrop-blur transition hover:bg-white/30 md:left-8"
-        >
-          <ChevronLeft className="h-6 w-6" />
-        </button>
-        <button
-          aria-label="Next slide"
-          onClick={next}
-          className="absolute right-4 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/15 p-3 text-white backdrop-blur transition hover:bg-white/30 md:right-8"
-        >
-          <ChevronRight className="h-6 w-6" />
-        </button>
-
         {/* Indicators */}
         <div className="absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 gap-2">
           {slides.map((_, i) => (

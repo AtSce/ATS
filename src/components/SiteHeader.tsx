@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Menu, X, ChevronDown, ChevronRight } from "lucide-react";
 
-const logo = "/imgs/ats-logo-transparent.png";
+const logo = "/imgs/New_logo.png";
 
 type SubItem = {
   label: string;
@@ -40,7 +40,7 @@ const nav: NavItem[] = [
     ],
   },
   {
-    label: "Our Services ",
+    label: "Our Services",
     to: "/business",
     children: [
       { label: "Project Works (EPC Mechanical)", to: "/business/project-works" },
@@ -69,11 +69,9 @@ export function SiteHeader() {
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [mobileSubExpanded, setMobileSubExpanded] = useState<string | null>(null);
 
-  // Outer region is fixed, sitting directly at the top of viewport with zero layout pushing side-effects
   const headerClasses =
     "fixed top-0 left-0 right-0 z-50 w-full bg-transparent px-4 py-4 md:px-8 pointer-events-none";
 
-  // Inner layout bar behaves as a floating capsule layout. We re-enable cursor actions with 'pointer-events-auto'
   const navContainerClasses =
     "flex w-full items-stretch overflow-visible px-6 mx-auto max-w-[1400px] bg-white/95 backdrop-blur-md shadow-md rounded-full border border-black/5 h-20 md:h-24 pointer-events-auto";
 
@@ -186,22 +184,28 @@ export function SiteHeader() {
           <div className="flex flex-col py-2">
             {nav.map((item) =>
               item.children ? (
-                <div key={item.label}>
-                  <button
+                <div key={item.label} className="flex flex-col">
+                  {/* Clean text header link trigger without systemic button accent outlines */}
+                  <div
                     onClick={() => setMobileExpanded((p) => (p === item.label ? null : item.label))}
-                    className="flex w-full items-center justify-between px-5 py-3 text-sm font-medium text-white hover:bg-white/10"
+                    className="w-full px-5 py-3 text-sm font-medium text-white hover:bg-white/10 cursor-pointer select-none"
                   >
                     {item.label}
-                    <ChevronDown
-                      className={`h-4 w-4 transition-transform ${mobileExpanded === item.label ? "rotate-180" : ""
-                        }`}
-                    />
-                  </button>
+                  </div>
                   {mobileExpanded === item.label && (
-                    <div className="bg-black/20">
+                    <div className="bg-black/20 flex flex-col">
+                      {/* Clean and Professional Overview Link Item inside the nested list layout */}
+                      <Link
+                        to={item.to}
+                        onClick={() => setOpen(false)}
+                        className="block px-8 py-2.5 text-sm font-semibold text-[#93c5fd] hover:bg-white/10 transition-colors border-b border-white/5"
+                      >
+                        Overview — {item.label}
+                      </Link>
+
                       {item.children.map((sub) =>
                         sub.children ? (
-                          <div key={sub.label}>
+                          <div key={sub.label} className="flex flex-col">
                             <button
                               onClick={() =>
                                 setMobileSubExpanded((p) => (p === sub.label ? null : sub.label))
@@ -210,8 +214,9 @@ export function SiteHeader() {
                             >
                               {sub.label}
                               <ChevronDown
-                                className={`h-4 w-4 transition-transform ${mobileSubExpanded === sub.label ? "rotate-180" : ""
-                                  }`}
+                                className={`h-4 w-4 transition-transform ${
+                                  mobileSubExpanded === sub.label ? "rotate-180" : ""
+                                }`}
                               />
                             </button>
                             {mobileSubExpanded === sub.label &&
@@ -245,7 +250,7 @@ export function SiteHeader() {
                   key={item.to}
                   to={item.to}
                   onClick={() => setOpen(false)}
-                  activeProps={{ className: "bg-white text-[#3A3A3A]" }}
+                  activeProps={{ className: "bg-white text-[#3A3A3A] rounded-none mx-2 my-1" }}
                   inactiveProps={{ className: "text-white hover:bg-white/10" }}
                   activeOptions={{ exact: item.to === "/" }}
                   className="px-5 py-3 text-sm font-medium transition-colors"

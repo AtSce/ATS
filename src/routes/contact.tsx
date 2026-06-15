@@ -18,35 +18,34 @@ export const Route = createFileRoute("/contact")({
 });
 
 const countryCodes = [
-  { code: "+65", label: "SG +65 Singapore" },
-  { code: "+1", label: "US +1 United States" },
-  { code: "+91", label: "IN +91 India" },
-  { code: "+60", label: "MY +60 Malaysia" },
-  { code: "+62", label: "ID +62 Indonesia" },
-  { code: "+63", label: "PH +63 Philippines" },
-  { code: "+66", label: "TH +66 Thailand" },
-  { code: "+84", label: "VN +84 Vietnam" },
-  { code: "+86", label: "CN +86 China" },
-  { code: "+81", label: "JP +81 Japan" },
-  { code: "+82", label: "KR +82 South Korea" },
-  { code: "+61", label: "AU +61 Australia" },
-  { code: "+44", label: "UK +44 United Kingdom" },
-  { code: "+971", label: "AE +971 UAE" },
-  { code: "+966", label: "SA +966 Saudi Arabia" },
-  { code: "+974", label: "QA +974 Qatar" },
-  { code: "+852", label: "HK +852 Hong Kong" },
-  { code: "+886", label: "TW +886 Taiwan" },
-  { code: "+94", label: "LK +94 Sri Lanka" },
-  { code: "+880", label: "BD +880 Bangladesh" },
-  { code: "+92", label: "PK +92 Pakistan" },
-  { code: "+33", label: "FR +33 France" },
-  { code: "+49", label: "DE +49 Germany" },
-  { code: "+31", label: "NL +31 Netherlands" },
-  { code: "+39", label: "IT +39 Italy" },
-  { code: "+41", label: "CH +41 Switzerland" },
-  { code: "+1", label: "CA +1 Canada" },
-  { code: "+64", label: "NZ +64 New Zealand" },
-].sort((a, b) => (a.label.substring(3) > b.label.substring(3) ? 1 : -1));
+  { code: "+65", label: "+65" },
+  { code: "+1", label: "+1" },
+  { code: "+91", label: "+91" },
+  { code: "+60", label: "+60" },
+  { code: "+62", label: "+62" },
+  { code: "+63", label: "+63" },
+  { code: "+66", label: "+66" },
+  { code: "+84", label: "+84" },
+  { code: "+86", label: "+86" },
+  { code: "+81", label: "+81" },
+  { code: "+82", label: "+82" },
+  { code: "+61", label: "+61" },
+  { code: "+44", label: "+44" },
+  { code: "+971", label: "+971" },
+  { code: "+966", label: "+966" },
+  { code: "+974", label: "+974" },
+  { code: "+852", label: "+852" },
+  { code: "+886", label: "+886" },
+  { code: "+94", label: "+94" },
+  { code: "+880", label: "+880" },
+  { code: "+92", label: "+92" },
+  { code: "+33", label: "+33" },
+  { code: "+49", label: "+49" },
+  { code: "+31", label: "+31" },
+  { code: "+39", label: "+39" },
+  { code: "+41", label: "+41" },
+  { code: "+64", label: "+64" },
+].sort((a, b) => (parseInt(a.code) > parseInt(b.code) ? 1 : -1));
 
 export function ContactUs() {
   // 1. Unified state machine to capture form input elements
@@ -235,7 +234,7 @@ export function ContactUs() {
                   <select
                     value={formData.countryCode}
                     onChange={(e) => setFormData({ ...formData, countryCode: e.target.value })}
-                    className="bg-white border border-black/20 px-3 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-none text-black/80 max-w-[160px] md:max-w-[180px]"
+                    className="bg-white border border-black/20 px-2 py-2.5 text-sm focus:outline-none focus:border-black transition-colors rounded-none text-black/80 w-[85px] shrink-0"
                   >
                     {countryCodes.map((item, idx) => (
                       <option key={`${item.code}-${idx}`} value={item.code}>

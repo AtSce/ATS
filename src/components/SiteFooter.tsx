@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 
-const logo = "/imgs/ats-logo.png";
+const logo = "/imgs/New_logo.png";
 
 export function SiteFooter() {
   return (

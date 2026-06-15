@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { PageLayout } from "@/components/PageLayout";
 import { supabase } from "@/utils/supabase";
-import * as XLSX from "xlsx"; // Import the Excel compilation engine modules
+import * as XLSX from "xlsx";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -94,14 +94,13 @@ function Admin() {
     }
   };
 
-  // FIX: Formats active database array rows and triggers a local Excel sheet file download process
+  // Formats active database array rows and triggers a local Excel sheet file download
   const downloadExcel = () => {
     if (leads.length === 0) {
       alert("No data available to download.");
       return;
     }
 
-    // Clean data structure row mapper block to produce beautiful dashboard exports
     const formattedLeads = leads.map((lead) => ({
       "DATE SUBMITTED": lead.created_at ? new Date(lead.created_at).toLocaleDateString() : "N/A",
       "STATUS (YOU PROVIDE)": lead.is_completed ? "Completed" : "Pending",
@@ -115,12 +114,10 @@ function Admin() {
       "PROJECT DETAILS MESSAGE": lead.message,
     }));
 
-    // Generate SheetJS workbook nodes and initialize save process routines
     const worksheet = XLSX.utils.json_to_sheet(formattedLeads);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Business Leads");
 
-    // Triggers instant system file package saves on your operating system environment
     XLSX.writeFile(
       workbook,
       `AtripleS_Leads_Report_${new Date().toISOString().split("T")[0]}.xlsx`,
@@ -201,109 +198,185 @@ function Admin() {
     >
       <div className="w-full mt-6 space-y-4 text-left">
         {/* Dashboard Actions Metrics Banner */}
-        <div className="flex justify-between items-center bg-white border border-black/10 p-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-center bg-white border border-black/10 p-4">
           <div className="text-sm text-black/60 font-medium">
             Total Enquiries Collected: <span className="text-black font-bold">{leads.length}</span>
           </div>
 
-          {/* Action Row containing both Refresh and Download elements */}
-          <div className="flex items-center gap-3">
-            {/* FIX: New functional "Download Excel" button element block */}
+          <div className="flex items-center gap-2">
             <button
               onClick={downloadExcel}
               disabled={leads.length === 0}
-              className="bg-[#1e40af] hover:bg-[#1e3a8a] disabled:bg-gray-300 text-white px-4 py-2 text-xs font-bold uppercase tracking-wider transition-colors focus:outline-none cursor-pointer"
+              className="flex-1 sm:flex-none bg-[#1e40af] hover:bg-[#1e3a8a] disabled:bg-gray-300 text-white px-4 py-2.5 text-xs font-bold uppercase tracking-wider transition-colors focus:outline-none cursor-pointer"
             >
               Download Excel (.xlsx)
             </button>
-
             <button
               onClick={fetchLeads}
-              className="bg-white border border-black/20 hover:border-black px-4 py-2 text-xs font-bold uppercase tracking-wider text-black transition-colors focus:outline-none cursor-pointer"
+              className="flex-1 sm:flex-none bg-white border border-black/20 hover:border-black px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-black transition-colors focus:outline-none cursor-pointer"
             >
               Refresh Records
             </button>
           </div>
         </div>
 
-        {/* Dynamic Interactive Data Spreadsheet Container Grid */}
-        <div className="border border-black/10 bg-white overflow-hidden shadow-sm">
-          {leadsLoading ? (
-            <div className="p-12 text-center text-sm font-medium text-black/40">
-              Querying database registry records...
-            </div>
-          ) : leads.length === 0 ? (
-            <div className="p-12 text-center text-sm font-medium text-black/40">
-              No business lead enquiries found inside the system database.
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="bg-[#fbfbfb] border-b border-black/10 text-[10px] font-bold uppercase tracking-wider text-black/60">
-                    <th className="p-4 w-40">You Provide (Status)</th>
-                    <th className="p-4 min-w-[140px]">Lead Name</th>
-                    <th className="p-4 min-w-[150px]">Contact Info</th>
-                    <th className="p-4 min-w-[140px]">Scope of Interest</th>
-                    <th className="p-4 min-w-[240px]">Project Details</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-black/5 text-sm">
-                  {leads.map((lead) => (
-                    <tr
-                      key={lead.id}
-                      className={`hover:bg-[#fbfbfb]/50 transition-colors ${
-                        lead.is_completed ? "bg-emerald-50/20" : ""
-                      }`}
-                    >
-                      <td className="p-4">
-                        <label className="flex items-center gap-2 cursor-pointer select-none">
-                          <input
-                            type="checkbox"
-                            checked={!!lead.is_completed}
-                            onChange={() => toggleLeadStatus(lead.id, !!lead.is_completed)}
-                            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
-                          />
-                          <span
-                            className={`text-xs font-bold uppercase tracking-wide ${
-                              lead.is_completed ? "text-emerald-700 font-black" : "text-amber-700"
-                            }`}
-                          >
-                            {lead.is_completed ? "Completed" : "Pending"}
-                          </span>
-                        </label>
-                      </td>
+        {/* Content */}
+        {leadsLoading ? (
+          <div className="p-12 text-center text-sm font-medium text-black/40 bg-white border border-black/10">
+            Querying database registry records...
+          </div>
+        ) : leads.length === 0 ? (
+          <div className="p-12 text-center text-sm font-medium text-black/40 bg-white border border-black/10">
+            No business lead enquiries found inside the system database.
+          </div>
+        ) : (
+          <>
+            {/* ── MOBILE: Card Layout (hidden on lg+) ── */}
+            <div className="flex flex-col gap-3 lg:hidden">
+              {leads.map((lead, idx) => (
+                <div
+                  key={lead.id}
+                  className={`bg-white border border-black/10 shadow-sm overflow-hidden ${
+                    lead.is_completed
+                      ? "border-l-4 border-l-emerald-500"
+                      : "border-l-4 border-l-amber-400"
+                  }`}
+                >
+                  {/* Card Header */}
+                  <div className="flex items-center justify-between px-4 py-3 bg-[#fbfbfb] border-b border-black/5">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-black/30">
+                      #{idx + 1}
+                    </span>
+                    <label className="flex items-center gap-2 cursor-pointer select-none">
+                      <input
+                        type="checkbox"
+                        checked={!!lead.is_completed}
+                        onChange={() => toggleLeadStatus(lead.id, !!lead.is_completed)}
+                        className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                      />
+                      <span
+                        className={`text-xs font-black uppercase tracking-wide ${
+                          lead.is_completed ? "text-emerald-700" : "text-amber-600"
+                        }`}
+                      >
+                        {lead.is_completed ? "Completed" : "Pending"}
+                      </span>
+                    </label>
+                  </div>
 
-                      <td className="p-4 font-medium text-black">
-                        <div>{lead.name}</div>
-                        {lead.company && (
-                          <div className="text-xs text-black/40 font-normal mt-0.5">
-                            {lead.company}
-                          </div>
-                        )}
-                      </td>
+                  {/* Card Body */}
+                  <div className="px-4 py-3 space-y-3">
+                    {/* Name + Company */}
+                    <div>
+                      <div className="font-semibold text-sm text-black">{lead.name}</div>
+                      {lead.company && (
+                        <div className="text-xs text-black/40 mt-0.5">{lead.company}</div>
+                      )}
+                    </div>
 
-                      <td className="p-4 text-xs space-y-0.5 text-black/80 font-medium">
-                        <div className="text-black font-semibold">{lead.email}</div>
-                        {lead.phone && <div className="text-black/50">{lead.phone}</div>}
-                      </td>
+                    {/* Contact */}
+                    <div className="flex flex-col gap-0.5">
+                      <div className="text-xs font-semibold text-black break-all">{lead.email}</div>
+                      {lead.phone && <div className="text-xs text-black/50">{lead.phone}</div>}
+                    </div>
 
-                      <td className="p-4">
-                        <span className="inline-block bg-blue-50 text-[#1e40af] text-xs font-bold px-2.5 py-1 rounded-sm uppercase tracking-wide border border-blue-100">
-                          {lead.scope_of_interest?.replace(/-/g, " ")}
+                    {/* Scope Badge */}
+                    {lead.scope_of_interest && (
+                      <div>
+                        <span className="inline-block bg-blue-50 text-[#1e40af] text-[11px] font-bold px-2.5 py-1 uppercase tracking-wide border border-blue-100">
+                          {lead.scope_of_interest.replace(/-/g, " ")}
                         </span>
-                      </td>
+                      </div>
+                    )}
 
-                      <td className="p-4 text-xs text-black/70 leading-relaxed max-w-sm whitespace-pre-wrap font-medium">
+                    {/* Message */}
+                    {lead.message && (
+                      <div className="text-xs text-black/60 leading-relaxed border-t border-black/5 pt-3 whitespace-pre-wrap">
                         {lead.message}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                      </div>
+                    )}
+
+                    {/* Date */}
+                    {lead.created_at && (
+                      <div className="text-[10px] text-black/30 font-medium pt-1 border-t border-black/5">
+                        Submitted: {new Date(lead.created_at).toLocaleDateString()}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
             </div>
-          )}
-        </div>
+
+            {/* ── DESKTOP: Table Layout (hidden below lg) ── */}
+            <div className="hidden lg:block border border-black/10 bg-white overflow-hidden shadow-sm">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="bg-[#fbfbfb] border-b border-black/10 text-[10px] font-bold uppercase tracking-wider text-black/60">
+                      <th className="p-4 w-40">You Provide (Status)</th>
+                      <th className="p-4 min-w-[140px]">Lead Name</th>
+                      <th className="p-4 min-w-[150px]">Contact Info</th>
+                      <th className="p-4 min-w-[140px]">Scope of Interest</th>
+                      <th className="p-4 min-w-[240px]">Project Details</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-black/5 text-sm">
+                    {leads.map((lead) => (
+                      <tr
+                        key={lead.id}
+                        className={`hover:bg-[#fbfbfb]/50 transition-colors ${
+                          lead.is_completed ? "bg-emerald-50/20" : ""
+                        }`}
+                      >
+                        <td className="p-4">
+                          <label className="flex items-center gap-2 cursor-pointer select-none">
+                            <input
+                              type="checkbox"
+                              checked={!!lead.is_completed}
+                              onChange={() => toggleLeadStatus(lead.id, !!lead.is_completed)}
+                              className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                            />
+                            <span
+                              className={`text-xs font-bold uppercase tracking-wide ${
+                                lead.is_completed ? "text-emerald-700 font-black" : "text-amber-700"
+                              }`}
+                            >
+                              {lead.is_completed ? "Completed" : "Pending"}
+                            </span>
+                          </label>
+                        </td>
+
+                        <td className="p-4 font-medium text-black">
+                          <div>{lead.name}</div>
+                          {lead.company && (
+                            <div className="text-xs text-black/40 font-normal mt-0.5">
+                              {lead.company}
+                            </div>
+                          )}
+                        </td>
+
+                        <td className="p-4 text-xs space-y-0.5 text-black/80 font-medium">
+                          <div className="text-black font-semibold">{lead.email}</div>
+                          {lead.phone && <div className="text-black/50">{lead.phone}</div>}
+                        </td>
+
+                        <td className="p-4">
+                          <span className="inline-block bg-blue-50 text-[#1e40af] text-xs font-bold px-2.5 py-1 rounded-sm uppercase tracking-wide border border-blue-100">
+                            {lead.scope_of_interest?.replace(/-/g, " ")}
+                          </span>
+                        </td>
+
+                        <td className="p-4 text-xs text-black/70 leading-relaxed max-w-sm whitespace-pre-wrap font-medium">
+                          {lead.message}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </PageLayout>
   );
