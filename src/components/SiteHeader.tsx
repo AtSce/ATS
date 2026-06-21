@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Menu, X, ChevronDown, ChevronRight } from "lucide-react";
 
 const logo = "/imgs/New_logo.png";
@@ -68,6 +68,31 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [mobileSubExpanded, setMobileSubExpanded] = useState<string | null>(null);
+
+  // References for click-outside detection
+  const menuRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent | TouchEvent) {
+      if (
+        open &&
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
+        setOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, [open]);
 
   const headerClasses =
     "fixed top-0 left-0 right-0 z-50 w-full bg-transparent px-4 py-4 md:px-8 pointer-events-none";
@@ -169,6 +194,7 @@ export function SiteHeader() {
         {/* Mobile View Toggle */}
         <div className="flex items-center lg:hidden ml-auto">
           <button
+            ref={buttonRef}
             onClick={() => setOpen((v) => !v)}
             className={mobileBtnClasses}
             aria-label="Toggle menu"
@@ -180,12 +206,14 @@ export function SiteHeader() {
 
       {/* Mobile Drawer Menu View Panels */}
       {open && (
-        <div className="mx-4 rounded-xl bg-[#3A3A3A]/95 backdrop-blur lg:hidden pointer-events-auto shadow-lg overflow-hidden mt-2">
+        <div
+          ref={menuRef}
+          className="mx-4 rounded-xl bg-[#3A3A3A]/95 backdrop-blur lg:hidden pointer-events-auto shadow-lg overflow-hidden mt-2"
+        >
           <div className="flex flex-col py-2">
             {nav.map((item) =>
               item.children ? (
                 <div key={item.label} className="flex flex-col">
-                  {/* Clean text header link trigger without systemic button accent outlines */}
                   <div
                     onClick={() => setMobileExpanded((p) => (p === item.label ? null : item.label))}
                     className="w-full px-5 py-3 text-sm font-medium text-white hover:bg-white/10 cursor-pointer select-none"
@@ -194,7 +222,6 @@ export function SiteHeader() {
                   </div>
                   {mobileExpanded === item.label && (
                     <div className="bg-black/20 flex flex-col">
-                      {/* Clean and Professional Overview Link Item inside the nested list layout */}
                       <Link
                         to={item.to}
                         onClick={() => setOpen(false)}

@@ -135,7 +135,7 @@ export function ContactUs() {
   };
 
   return (
-    <PageLayout eyebrow="CONTACT US" title="Our Head Office">
+    <PageLayout eyebrow="CONTACT US" title="Contact Our Team">
       <div className="max-w-4xl space-y-8 text-left">
         {/* HQ Address Section */}
         <div>

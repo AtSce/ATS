@@ -51,7 +51,7 @@ const slides = [
   },
 ];
 
-function Network() {
+export function Network() {
   const [index, setIndex] = useState(0);
   const go = useCallback(
     (i: number) => setIndex(((i % slides.length) + slides.length) % slides.length),
@@ -73,8 +73,9 @@ function Network() {
       nav={<PageNav title="Field of Business" links={networkLinks} currentPath="/network" />}
     >
       {/* Slideshow Display Layer Container */}
-      <div className="relative isolate overflow-hidden rounded-lg border border-black/14 bg-black">
-        <div className="relative aspect-[16/9] w-full">
+      <div className="relative isolate overflow-hidden rounded-lg border border-black/10 bg-black">
+        {/* Responsive aspect ratio: 4:3 on mobile, 16:9 on md+ */}
+        <div className="relative aspect-[4/3] w-full md:aspect-[16/9]">
           {slides.map((s, i) => (
             <div
               key={s.title}
@@ -83,20 +84,19 @@ function Network() {
               aria-hidden={i !== index}
             >
               <img src={s.img} alt={s.title} className="h-full w-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
-              <div
-                key={`copy-${index}-${i}`}
-                className="absolute inset-x-0 bottom-0 p-6 text-white md:p-10"
-              >
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+
+              {/* Responsive Text Padding */}
+              <div className="absolute inset-x-0 bottom-0 p-4 text-white md:p-10">
                 <h2
-                  className={`font-display text-2xl font-extrabold uppercase tracking-wide text-white md:text-4xl ${i === index ? "animate-fade-in" : ""}`}
-                  style={{ textShadow: "0 2px 12px rgba(0,0,0,0.7)" }}
+                  className={`font-display text-xl font-extrabold uppercase tracking-wide text-white md:text-4xl ${i === index ? "animate-fade-in" : ""}`}
+                  style={{ textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}
                 >
                   {s.title}
                 </h2>
                 <p
-                  className={`mt-3 max-w-3xl text-sm leading-relaxed text-white/90 md:text-base ${i === index ? "animate-fade-in" : ""}`}
-                  style={{ textShadow: "0 1px 6px rgba(0,0,0,0.7)" }}
+                  className={`mt-2 max-w-3xl text-xs leading-relaxed text-white/90 md:text-base ${i === index ? "animate-fade-in" : ""}`}
+                  style={{ textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}
                 >
                   {s.body}
                 </p>
@@ -105,56 +105,52 @@ function Network() {
           ))}
         </div>
 
-        {/* Carousel Direction Controllers */}
+        {/* Direction Controllers (Increased hit area for mobile) */}
         <button
           type="button"
           aria-label="Previous"
           onClick={prev}
-          className="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/40 p-2 text-white backdrop-blur transition hover:bg-black/60 cursor-pointer"
+          className="absolute left-2 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white backdrop-blur transition hover:bg-black/70 cursor-pointer md:left-4"
         >
-          <ChevronLeft className="h-5 w-5" />
+          <ChevronLeft className="h-5 w-5 md:h-6 md:w-6" />
         </button>
         <button
           type="button"
           aria-label="Next"
           onClick={next}
-          className="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-black/40 p-2 text-white backdrop-blur transition hover:bg-black/60 cursor-pointer"
+          className="absolute right-2 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white backdrop-blur transition hover:bg-black/70 cursor-pointer md:right-4"
         >
-          <ChevronRight className="h-5 w-5" />
+          <ChevronRight className="h-5 w-5 md:h-6 md:w-6" />
         </button>
 
-        {/* Slideline Pagination Dot Controls */}
-        <div className="absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 gap-2">
+        {/* Pagination Dots */}
+        <div className="absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 gap-2">
           {slides.map((_, i) => (
             <button
               key={i}
               type="button"
               aria-label={`Go to slide ${i + 1}`}
               onClick={() => go(i)}
-              className={`h-1.5 transition-all duration-300 cursor-pointer ${i === index ? "w-8 bg-[#ef6c1a]" : "w-2 bg-white/60 hover:bg-white"}`}
+              className={`h-1.5 transition-all duration-300 cursor-pointer ${i === index ? "w-6 md:w-8 bg-[#ef6c1a]" : "w-2 bg-white/60 hover:bg-white"}`}
             />
           ))}
         </div>
       </div>
 
-      {/* FIXED TOPIC SELECTION CARDS GRID: 
-          Restructured with layout boundary safety blocks ('min-w-0', 'flex-1', 'shrink-0') 
-          to encapsulate text perfectly within card borders without overflow.
-      */}
+      {/* Grid remains the same as it was already responsive */}
       <ul className="mt-8 grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {slides.map((s, i) => (
           <li key={s.title}>
             <button
               type="button"
               onClick={() => go(i)}
-              className={`flex w-full items-center gap-3 rounded-xl border p-2 text-left transition-all duration-300 group overflow-hidden cursor-pointer ${
+              className={`flex w-full items-center gap-3 rounded-xl border p-3 text-left transition-all duration-300 group overflow-hidden cursor-pointer ${
                 i === index
                   ? "border-[#1e40af] bg-blue-50 shadow-sm"
                   : "border-black/10 bg-white hover:border-[#1e40af]/40 hover:shadow-md"
               }`}
             >
-              {/* Image Frame Container Box with fixed dimensions */}
-              <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-md bg-gray-100 border border-black/5">
+              <div className="relative h-12 w-16 shrink-0 overflow-hidden rounded-md bg-gray-100 border border-black/5">
                 <img
                   src={s.img}
                   alt=""
@@ -162,8 +158,7 @@ function Network() {
                 />
               </div>
 
-              {/* Flex Text Wrap Box: min-w-0 enables native string clipping operations */}
-              <div className="min-w-0 flex-1 pr-1">
+              <div className="min-w-0 flex-1">
                 <span
                   className={`block text-xs font-bold uppercase tracking-wide transition-colors duration-200 line-clamp-2 leading-tight ${
                     i === index ? "text-[#1e40af]" : "text-black/80 group-hover:text-[#1e40af]"

@@ -19,7 +19,7 @@ export const Route = createFileRoute("/about/")({
 function About() {
   return (
     <PageLayout
-      eyebrow="ABOUT US ·"
+      eyebrow="ABOUT US"
       title="Corporate Profile"
       subtitle=""
       nav={<PageNav title="About Us" links={aboutLinks} currentPath="/about" />}
