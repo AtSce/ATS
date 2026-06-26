@@ -25,7 +25,10 @@ interface Certification {
   scope: string;
   registrar: string;
   expiry: string;
-  img: "/imgs/cert-iso9001.jpg" | "/imgs/cert-iso45001.jpg" | "/imgs/Bizsafe A-TRIPLE-S CONSTRUCTION AND ENGINEERING PTE. LTD._page-0001.jpg";
+  img:
+    | "/imgs/cert-iso9001.jpg"
+    | "/imgs/cert-iso45001.jpg"
+    | "/imgs/Bizsafe A-TRIPLE-S CONSTRUCTION AND ENGINEERING PTE. LTD._page-0001.jpg";
 }
 
 const certificationList: Certification[] = [
