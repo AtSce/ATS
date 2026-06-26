@@ -25,7 +25,7 @@ interface Certification {
   scope: string;
   registrar: string;
   expiry: string;
-  img: "/imgs/cert-iso9001.jpg" | "/imgs/cert-iso45001.jpg";
+  img: "/imgs/cert-iso9001.jpg" | "/imgs/cert-iso45001.jpg" | "/imgs/Bizsafe A-TRIPLE-S CONSTRUCTION AND ENGINEERING PTE. LTD._page-0001.jpg";
 }
 
 const certificationList: Certification[] = [
@@ -48,6 +48,15 @@ const certificationList: Certification[] = [
     registrar: "International Certification Registrar",
     expiry: "Valid until 2028",
     img: "/imgs/cert-iso45001.jpg",
+  },
+  {
+    id: 3,
+    title: "bizSAFE Level Star",
+    subtitle: "Workplace Safety and Health Council",
+    scope: "Attainment of bizSAFE Level Star for workplace safety and health standards.",
+    registrar: "Workplace Safety and Health Council",
+    expiry: "Valid until 27/05/2029",
+    img: "/imgs/Bizsafe A-TRIPLE-S CONSTRUCTION AND ENGINEERING PTE. LTD._page-0001.jpg",
   },
 ];
 
@@ -74,7 +83,7 @@ function CertificationsComponent() {
         </div>
 
         {/* Premium Twin Certification Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-4">
           {certificationList.map((cert) => (
             <div
               key={cert.id}
